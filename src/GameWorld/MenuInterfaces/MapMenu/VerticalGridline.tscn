@@ -4,13 +4,6 @@
 [ext_resource path="res://src/GameWorld/MenuInterfaces/red.png" type="Texture" id=2]
 [ext_resource path="res://src/GameWorld/MenuInterfaces/MapMenu/VerticalGridline.gd" type="Script" id=4]
 
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> origin/master
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 0.2, 720 )
 
@@ -28,9 +21,5 @@ shape = SubResource( 1 )
 scale = Vector2( 0.105224, 7.02092 )
 texture = ExtResource( 2 )
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 [node name="AudioMidline" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 1 )

@@ -1,11 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/GameWorld/GameWorldObjects/Obstacles/bush.wav" type="AudioStream" id=1]
-<<<<<<< HEAD
 [ext_resource path="res://src/GameWorld/GameWorldObjects/Obstacles/Bush.gd" type="Script" id=2]
-=======
-[ext_resource path="res://src/GameWorld/GameWorldObjects/Obstacles/GameWorldObstacle.gd" type="Script" id=2]
->>>>>>> origin/master
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -18,10 +14,6 @@ extents = Vector3( 1, 1.01251, 1 )
 [node name="Bush" type="Area"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.442783, 1.31248, 12.0776 )
 script = ExtResource( 2 )
-<<<<<<< HEAD
-=======
-type = "bush"
->>>>>>> origin/master
 
 [node name="StaticBody" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )

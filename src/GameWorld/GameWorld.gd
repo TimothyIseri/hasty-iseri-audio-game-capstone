@@ -67,7 +67,7 @@ func configure_gameworld_resource():
 		var type = gameworld_resource.get_type()
 		var LOAD_PATH = "res://src/GameWorld/GameWorldObjects/Resources/"
 		var gameworld_resource_config = gameworld_object_configurations["resources"][type]
-
+		
 		if gameworld_resource_config.has("identity_sound"):
 			gameworld_resource.set_identity_sound(load(LOAD_PATH + gameworld_resource_config["identity_sound"]))
 		if gameworld_resource_config.has("name"):
@@ -97,11 +97,11 @@ func load_object_configurations():
 	var file_name = GAMEWORLD_OBJECT_CONFIG_PATH
 	if not gameworld_object_configurations_data.file_exists(file_name):
 		print("ERROR: could not load %s" % file_name)
-		return
-
+		return 
+		
 	gameworld_object_configurations_data.open(file_name, File.READ)
 	gameworld_object_configurations_data = gameworld_object_configurations_data.get_as_text()
-
+	
 	gameworld_object_configurations = parse_json(gameworld_object_configurations_data)
 	if not typeof(gameworld_object_configurations) == TYPE_DICTIONARY:
 		print("ERROR: gameworld_object_definitions parse result invalid; is type " + str(typeof(gameworld_object_configurations)))
@@ -112,7 +112,7 @@ func load_object_configurations():
 
 func load_waypoints():
 	# TODO: load waypoint data from file if appropriate
-
+	
 	var gameworld_waypoints_config = gameworld_object_configurations["waypoints"]
 	for waypoint in gameworld_waypoints_config:
 		var new_waypoint = GameWorldWaypoint.instance()
@@ -120,7 +120,7 @@ func load_waypoints():
 		# TODO: if loaded waypoint was spawned then set spawn flag, position
 		new_waypoint.add_to_group("waypoints")
 		add_child(new_waypoint)
-
+		
 func on_InventoryMenu_closed():
 	if has_node("InventoryMenu"):
 		$InventoryMenu.queue_free()
@@ -175,7 +175,7 @@ func pause_game():
 	$Map/Player.paused = true
 	if $Map/Player/Footsteps.is_playing():
 		$Map/Player/Footsteps.stop()
-
+	
 func populate_tactile_map_with_marker_data():
 	pass
 

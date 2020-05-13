@@ -7,18 +7,14 @@ const MAX_SPEED = 5
 const ACCEL= 2
 const DEACCEL= 4
 const MAX_SLOPE_ANGLE = 30
-<<<<<<< HEAD
 var mouse_sensitivity = .3
 var joypad_sensitivity = 1
-=======
->>>>>>> origin/master
 var EchoList = []
 var InteractList = []
 var footsteps_playing = false
 var previous_position
 var paused = false
 signal harvested(type)
-<<<<<<< HEAD
 onready var head = $Head
 onready var camera = $Head/Camera
 var camera_x_rotation = 0
@@ -39,13 +35,6 @@ func _physics_process(delta):
 	if !paused:
 		var dir = Vector3() # Where does the player intend to walk to
 		var cam_xform = $Head/Camera.get_global_transform()
-=======
-
-func _physics_process(delta):
-	if !paused:
-		var dir = Vector3() # Where does the player intend to walk to
-		var cam_xform = $target/camera.get_global_transform()
->>>>>>> origin/master
 	
 		if Input.is_action_pressed("gameworld_move_forward"):
 			dir += -cam_xform.basis[2]
@@ -60,7 +49,6 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("gameworld_interact"):
 			if InteractList.size() > 0:
 				interact()
-<<<<<<< HEAD
 		if Input.is_action_just_pressed("gameworld_use_compass"):
 			$Compass.play()
 		if Input.get_connected_joypads():
@@ -75,58 +63,30 @@ func _physics_process(delta):
 		var hvel = vel
 		hvel.y = 0
 
-=======
-		dir.y = 0
-		dir = dir.normalized()
-	
-		vel.y += delta * g
-	
-		var hvel = vel
-		hvel.y = 0
-	
->>>>>>> origin/master
 		var target = dir * MAX_SPEED
 		var accel
 		if dir.dot(hvel) > 0:
 			accel = ACCEL
 		else:
 			accel = DEACCEL
-<<<<<<< HEAD
 
 		hvel = hvel.linear_interpolate(target, accel * delta)
 
 		vel.x = hvel.x
 		vel.z = hvel.z
 
-=======
-	
-		hvel = hvel.linear_interpolate(target, accel * delta)
-	
-		vel.x = hvel.x
-		vel.z = hvel.z
-	
->>>>>>> origin/master
 		vel = move_and_slide(vel, Vector3(0,1,0))
 		if ismoving() && not $Footsteps.is_playing():
 			$Footsteps.play()
 		elif !ismoving() && $Footsteps.is_playing():
 			$Footsteps.stop()
-<<<<<<< HEAD
 
-=======
-			
-
-	
-	
-	
->>>>>>> origin/master
 func echo():
 	# play list of objects in that player body is in range of
 	for i in EchoList:
 		if i:
 			i.play()
 			yield(i, "finished")
-<<<<<<< HEAD
 
 func get_name_to_speech():
 	return name_to_speech
@@ -138,25 +98,6 @@ func interact():
 			if child.is_in_group("resources"):
 				emit_signal("obstacle_harvested", obstacle, child)
 		# InteractList.erase(obstacle) # TODO: decide how to handle this
-=======
-			
-			
-		
-	
-
-func interact():
-	var sound = $Pickup
-	for i in InteractList:
-		i.remove_from_group("harvestable")
-		#TODO actual inventory system
-		sound.play()
-		#yield(sound, "finished")
-		emit_signal("harvested",i.get_resource())
-
-		InteractList.erase(i)
-		
-			
->>>>>>> origin/master
 
 func ismoving():
 	var moving
@@ -165,10 +106,6 @@ func ismoving():
 	else:
 		moving = false
 	return moving
-<<<<<<< HEAD
-=======
-	
->>>>>>> origin/master
 
 # add area to list of sounds to be echoed
 func _on_EchoRange7_area_entered(area):
@@ -186,10 +123,6 @@ func _on_EchoRange7_area_exited(area):
 	if area.has_node("AudioStreamPlayer3D"):
 		EchoList.erase(area.get_node("AudioStreamPlayer3D"))
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 func _on_WalkingEchoRange_area_entered(area):
 	#if area.get_child(2):
 	#	if area.get_child(2).get_class() == "AudioStreamPlayer3D":
@@ -203,17 +136,10 @@ func _on_WalkingEchoRange_area_entered(area):
 			print(area)
 			InteractList.append(area)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 func _on_WalkingEchoRange_area_exited(area):
 	if area.is_in_group("harvestable"):
 		InteractList.erase(area)
 	pass # Replace with function body.
-<<<<<<< HEAD
 
 func set_name_to_speech(arg_stream):
 	name_to_speech = arg_stream
-=======
->>>>>>> origin/master

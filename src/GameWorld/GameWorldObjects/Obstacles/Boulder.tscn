@@ -1,11 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/GameWorld/GameWorldObjects/Obstacles/rock.wav" type="AudioStream" id=1]
-<<<<<<< HEAD
 [ext_resource path="res://src/GameWorld/GameWorldObjects/Obstacles/Boulder.gd" type="Script" id=3]
-=======
-[ext_resource path="res://src/GameWorld/GameWorldObjects/Obstacles/GameWorldObstacle.gd" type="Script" id=2]
->>>>>>> origin/master
 
 [sub_resource type="SphereMesh" id=1]
 
@@ -16,12 +12,7 @@ data = PoolVector3Array( 0, 1, 0, 0, 1, 0, 0, 0.9955, 0.0951, 0, 1, 0, 0.0093, 0
 
 [node name="Boulder" type="Area"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6567, 0.591944, 1.1419 )
-<<<<<<< HEAD
 script = ExtResource( 3 )
-=======
-script = ExtResource( 2 )
-type = "boulder"
->>>>>>> origin/master
 
 [node name="StaticBody2" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )

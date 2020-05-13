@@ -3,11 +3,6 @@
 [ext_resource path="res://src/GameWorld/MenuInterfaces/red.png" type="Texture" id=1]
 [ext_resource path="res://src/GameWorld/MenuInterfaces/MapMenu/Marker.gd" type="Script" id=2]
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/master
 [sub_resource type="RectangleShape2D" id=1]
 
 [node name="Marker" type="Area2D"]
@@ -19,13 +14,6 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-<<<<<<< HEAD
-=======
-[node name="NameToSpeech" type="AudioStreamPlayer" parent="."]
-
-[node name="IdentitySound" type="AudioStreamPlayer2D" parent="."]
-
->>>>>>> origin/master
 [node name="DeveloperVisual" type="Sprite" parent="."]
 position = Vector2( 6.67572e-06, -0.0711982 )
 scale = Vector2( 0.401938, 1.95405 )

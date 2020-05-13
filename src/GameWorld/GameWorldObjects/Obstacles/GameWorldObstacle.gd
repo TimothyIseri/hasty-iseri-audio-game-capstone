@@ -1,7 +1,6 @@
 extends Spatial
 
 var identity_sound
-<<<<<<< HEAD
 export(String, "tree", "boulder", "bush") var type: String = "tree"
 var resource
 
@@ -13,18 +12,6 @@ func _ready():
 
 func set_identity_sound(stream):
 	identity_sound = stream
-=======
-export(String, "tree", "boulder", "bush") var type
-var resource
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	add_to_group("obstacles")
-	add_to_group("harvestable")
-
-func set_identity_sound(stream):
-	$AudioStreamPlayer3D.set_stream(stream)
->>>>>>> origin/master
 	
 func get_identity_sound():
 	return identity_sound
