@@ -24,6 +24,7 @@ func _ready():
 	# TODO: load energy level from saved state or initialize at a default value
 	$EnergyLevel.set_level(DEFAULT_ENERGY_LEVEL)
 	$Map/Ambiance.play()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -32,8 +33,13 @@ func _process(_delta):
 			open_inventory_menu()
 		elif Input.is_action_just_pressed("gameworld_energy_level"):
 			$EnergyLevel.init_magnituted_feedback()
-		if Input.is_action_just_pressed("gameworld_open_map_menu"):
+		elif Input.is_action_just_pressed("gameworld_open_map_menu"):
 			open_map_menu()
+		if Input.is_action_just_pressed("gameworld_exit"):
+			pause_game()
+	else:
+		if Input.is_action_just_pressed("gameworld_exit"):
+			unpause_game()
 
 func configure_gameworld_artifact():
 	pass # TODO
@@ -170,6 +176,7 @@ func open_inventory_menu():
 
 func pause_game():
 	paused = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	if $Map/Ambiance.is_playing():
 		$Map/Ambiance.stop()
 	$Map/Player.paused = true
@@ -180,6 +187,7 @@ func populate_tactile_map_with_marker_data():
 	pass
 
 func unpause_game():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	paused = false
 	$Map/Player.paused = false
 	if not $Map/Ambiance.is_playing():
