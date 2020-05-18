@@ -1,11 +1,9 @@
 extends Node
 
-const GAMEWORLD_OBJECT_CONFIG_PATH = "res://src/GameWorld/GameWorldObjects/gameworld_object_definitions.json"
 const DEFAULT_ENERGY_LEVEL = 5
 
 var paused = false
-var gameworld_object_configurations
-var gameworld_resource_craft_mappings = {}
+var gameworld_object_configurations = preload("res://src/GameWorld/GameWorldObjects/gameworld_object_config.tres")
 var inventory
 
 var objects = {"artifacts": null, "obstacles": null, "resources": null, "waypoints": null}
@@ -17,7 +15,6 @@ var GameWorldWaypoint= load("res://src/GameWorld/GameWorldObjects/Waypoints/Game
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	load_object_configurations()
 	load_waypoints()
 	configure_gameworld_objects()
 	load_inventory()
@@ -55,7 +52,7 @@ func configure_gameworld_obstacle():
 	for gameworld_obstacle in get_tree().get_nodes_in_group("obstacles"):
 		var type = gameworld_obstacle.get_type()
 		var LOAD_PATH = "res://src/GameWorld/GameWorldObjects/Obstacles/"
-		var gameworld_obstacle_config = gameworld_object_configurations["obstacles"][type]
+		var gameworld_obstacle_config = gameworld_object_configurations.obstacles[type]
 
 		if gameworld_obstacle_config.has("identity_sound"):
 			gameworld_obstacle.set_identity_sound(load(LOAD_PATH + gameworld_obstacle_config["identity_sound"]))
@@ -63,7 +60,7 @@ func configure_gameworld_obstacle():
 			gameworld_obstacle.add_to_group("harvestable")
 			gameworld_obstacle.set_resource(gameworld_obstacle_config["resource"])
 			var new_resource = GameWorldResource.instance()
-			new_resource.set_type(gameworld_object_configurations["obstacles"][type]["resource"])
+			new_resource.set_type(gameworld_obstacle_config["resource"])
 			new_resource.add_to_group("resources")
 			new_resource.translation = gameworld_obstacle.translation
 			gameworld_obstacle.add_child(new_resource)
@@ -72,7 +69,7 @@ func configure_gameworld_resource():
 	for gameworld_resource in get_tree().get_nodes_in_group("resources"):
 		var type = gameworld_resource.get_type()
 		var LOAD_PATH = "res://src/GameWorld/GameWorldObjects/Resources/"
-		var gameworld_resource_config = gameworld_object_configurations["resources"][type]
+		var gameworld_resource_config = gameworld_object_configurations.resources[type]
 		
 		if gameworld_resource_config.has("identity_sound"):
 			gameworld_resource.set_identity_sound(load(LOAD_PATH + gameworld_resource_config["identity_sound"]))
@@ -88,38 +85,19 @@ func configure_gameworld_resource():
 func configure_gameworld_waypoint():
 	for gameworld_waypoint in get_tree().get_nodes_in_group("waypoints"):
 		var LOAD_PATH = "res://src/GameWorld/GameWorldObjects/Waypoints/"
-		var gameworld_waypoint_config = gameworld_object_configurations["waypoints"][gameworld_waypoint.name]
+		var gameworld_waypoint_config = gameworld_object_configurations.waypoints[gameworld_waypoint.name]
 
 		if gameworld_waypoint_config.has("name"):
 			gameworld_waypoint.set_name_to_speech(load(LOAD_PATH + gameworld_waypoint_config["name"]))
 
 func load_inventory():
 	inventory = $Inventory
-	inventory.load_gameworld_resource_configurations(gameworld_object_configurations['resources'])
 	inventory.load_items()
-
-func load_object_configurations():
-	var gameworld_object_configurations_data = File.new()
-	var file_name = GAMEWORLD_OBJECT_CONFIG_PATH
-	if not gameworld_object_configurations_data.file_exists(file_name):
-		print("ERROR: could not load %s" % file_name)
-		return 
-		
-	gameworld_object_configurations_data.open(file_name, File.READ)
-	gameworld_object_configurations_data = gameworld_object_configurations_data.get_as_text()
-	
-	gameworld_object_configurations = parse_json(gameworld_object_configurations_data)
-	if not typeof(gameworld_object_configurations) == TYPE_DICTIONARY:
-		print("ERROR: gameworld_object_definitions parse result invalid; is type " + str(typeof(gameworld_object_configurations)))
-		return
-
-	for resource_type in gameworld_object_configurations["resources"].keys():
-		gameworld_resource_craft_mappings[resource_type] = gameworld_object_configurations["resources"][resource_type]["craft_mappings"]
 
 func load_waypoints():
 	# TODO: load waypoint data from file if appropriate
 	
-	var gameworld_waypoints_config = gameworld_object_configurations["waypoints"]
+	var gameworld_waypoints_config = gameworld_object_configurations.waypoints
 	for waypoint in gameworld_waypoints_config:
 		var new_waypoint = GameWorldWaypoint.instance()
 		new_waypoint.name = waypoint
@@ -167,7 +145,6 @@ func open_map_menu():
 
 func open_inventory_menu():
 	var inventory_menu = InventoryMenu.instance()
-	inventory_menu.load_craft_mappings(gameworld_resource_craft_mappings)
 	inventory_menu.load_inventory(inventory)
 	inventory_menu.connect("closed",self,"on_InventoryMenu_closed")
 	inventory_menu.connect("item_consumed",self,"on_InventoryMenu_item_consumed")

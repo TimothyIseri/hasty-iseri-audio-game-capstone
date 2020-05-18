@@ -1,0 +1,68 @@
+[gd_resource type="TextFile" load_steps=2 format=2]
+
+[ext_resource path="res://src/GameWorld/GameWorldObjects/gameworld_object_config.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+artifacts = {
+
+}
+obstacles = {
+"boulder": {
+"identity_sound": "rock.wav",
+"resource": "stones"
+},
+"bush": {
+"identity_sound": "bush.wav",
+"resource": "sticks"
+},
+"tree": {
+"identity_sound": "tree.wav",
+"resource": "apple"
+}
+}
+resources = {
+"apple": {
+"consume_sound": "apple-crunch-14.wav",
+"consume_value": 1,
+"craft_mappings": [  ],
+"description": "speech_apple_description.wav",
+"name": "speech_apple.wav"
+},
+"axe": {
+"consume_value": 0,
+"craft_mappings": [ [ "sticks", "stones" ] ],
+"description": "speech_axe_description.wav",
+"identity_sound": "axe-chop-into-wood-little-debris.wav",
+"name": "speech_axe.wav"
+},
+"sticks": {
+"consume_value": 0,
+"craft_mappings": [  ],
+"description": "speech_sticks_description.wav",
+"name": "speech_sticks.wav"
+},
+"stones": {
+"consume_value": 0,
+"craft_mappings": [  ],
+"description": "speech_stones_description.wav",
+"name": "speech_stones.wav"
+}
+}
+waypoints = {
+"waypoint1": {
+"name": "speech_waypoint1.wav"
+},
+"waypoint2": {
+"name": "speech_waypoint2.wav"
+},
+"waypoint3": {
+"name": "speech_waypoint3.wav"
+},
+"waypoint4": {
+"name": "speech_waypoint4.wav"
+}
+}
+craft_mappings = {
+
+}

@@ -3,7 +3,7 @@ class_name Inventory
 
 var inventory_items = []
 var max_capacity = 8
-var gameworld_resource_configurations = {}
+var gameworld_resource_configurations = load("res://src/GameWorld/GameWorldObjects/gameworld_object_config.tres").resources
 
 const RESOURCE_LOAD_PATH = "res://src/GameWorld/GameWorldObjects/Resources/"
 
@@ -97,12 +97,6 @@ func is_empty():
 	if len(inventory_items) == 0:
 		return true
 	return false
-
-func load_gameworld_resource_configurations(external_config):
-	if external_config == null:
-		gameworld_resource_configurations = {"null": null}
-	else:
-		gameworld_resource_configurations = external_config
 
 func load_items():
 	# TODO: load player inventory from serialized data in file system

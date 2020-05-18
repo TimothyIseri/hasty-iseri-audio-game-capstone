@@ -7,8 +7,10 @@ signal item_consumed
 var current_index
 var inventory = null
 var marked_for_craft = []
-var craft_mappings = null
-var gameworld_resource_configurations = null
+var craft_mappings = {}
+var gameworld_resource_configurations = load("res://src/GameWorld/GameWorldObjects/gameworld_object_config.tres").resources
+
+var gameworld_object_configurations = load("res://src/GameWorld/GameWorldObjects/gameworld_object_config.tres")
 
 var audio_consume_failed_sound = load("res://src/GameWorld/MenuInterfaces/InventoryMenu/141334__lluiset7__error-2.wav")
 var audio_craft_success_sound = load("res://src/GameWorld/MenuInterfaces/InventoryMenu/441812__fst180081__180081-hammer-on-anvil-01.wav")
@@ -51,6 +53,9 @@ func _ready():
 	current_index = 0
 	if not inventory:
 		inventory = Inventory.new()
+	for resource_type in gameworld_object_configurations.resources.keys():
+		craft_mappings[resource_type] = gameworld_object_configurations.resources[resource_type]["craft_mappings"]
+	
 	$CloseMenuSound.connect("finished",self,"on_CloseMenuSound_finished")
 	$ConsumeSound.connect("finished",self,"on_ConsumeSound_finished")
 	$WhisperAudioPlayerQueue.add_primary_stream(speech_inventory_menu)
@@ -246,7 +251,7 @@ func list_occupied_spaces():
 
 func load_craft_mappings(external_craft_mappings):
 	if external_craft_mappings == null:
-		craft_mappings = {"null": null}
+		craft_mappings = gameworld_object_configurations.craft_mappings
 	else:
 		craft_mappings = external_craft_mappings
 

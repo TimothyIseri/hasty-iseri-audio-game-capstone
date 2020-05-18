@@ -1,0 +1,116 @@
+image: barichello/godot-ci:3.2.1
+
+# Cache imported assets between runs
+cache:
+  key: import-assets
+  paths:
+    - .import/
+
+stages:
+  - export
+  - deploy
+
+variables:
+  EXPORT_NAME: hasty-iseri-capstone
+
+before_script:
+  - mkdir -v -p build/linux
+  - mkdir -v -p build/windows
+  - mkdir -v -p build/web
+
+linux:
+  stage: export
+  script:
+    - godot -v --export-debug "Linux/X11" ./build/linux/$EXPORT_NAME.x86_64
+  artifacts:
+    name: $EXPORT_NAME-$CI_JOB_NAME
+    paths:
+      - build/linux
+  rules:
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      - when: always
+
+windows:
+  stage: export
+  script:
+    - godot -v --export-debug "Windows Desktop" ./build/windows/$EXPORT_NAME.exe
+  artifacts:
+    name: $EXPORT_NAME-$CI_JOB_NAME
+    paths:
+      - build/windows
+  rules:
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      - when: always
+
+.mac:
+  stage: export
+  script:
+    - godot -v --export-debug "Mac OSX" ./build/mac/$EXPORT_NAME.zip
+  artifacts:
+    name: $EXPORT_NAME-$CI_JOB_NAME
+    paths:
+      - build/mac
+  rules:
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      - when: always
+
+web:
+  stage: export
+  script:
+    - godot -v --export-debug "HTML5" ./build/web/index.html
+  artifacts:
+    name: $EXPORT_NAME-$CI_JOB_NAME
+    paths:
+      - build/web
+  rules:
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      - when: always
+
+# GitLab Pages Deploy
+pages:
+  stage: deploy
+  dependencies:
+    - web
+  script:
+    # This ensures the `pages` branch is available.
+    - git fetch
+    - git checkout pages
+    - rm -f *.md
+    - mv build/web/** ./public
+  artifacts:
+    paths:
+      - public
+  rules:
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      - when: always
+
+# Itch.io Deploy
+.itchio:linux:
+  stage: deploy
+  script:
+    - butler push ./build/linux $ITCHIO_USERNAME/$ITCHIO_GAME:linux
+  dependencies:
+    - linux
+  rules:
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      - when: always
+
+.itchio:windows:
+  stage: deploy
+  script:
+    - butler push ./build/windows $ITCHIO_USERNAME/$ITCHIO_GAME:windows
+  dependencies:
+    - windows
+  rules:
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      - when: always
+
+.itchio:macosx:
+  stage: deploy
+  script:
+    - butler push ./build/mac $ITCHIO_USERNAME/$ITCHIO_GAME:mac
+  dependencies:
+    - mac
+  rules:
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      - when: always
